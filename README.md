@@ -13,7 +13,7 @@ tiffslide
 
 ## Usage
 
-'''
+```console
 conda run python main.py --fixedSize True 
 	--masked True 
 	--svsBase '/blue/...' 
@@ -23,4 +23,4 @@ conda run python main.py --fixedSize True
 	--username 'username' 
 	--password 'password' 
 	--apiUrl 'https://athena.rc.ufl.edu/api/v1'
-'''
+```
