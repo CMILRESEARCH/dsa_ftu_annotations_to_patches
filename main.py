@@ -5,6 +5,7 @@ import shapely
 import tiffslide as openslide
 import numpy as np
 import os
+import logging
 
 import numpy as np
 
@@ -195,6 +196,8 @@ def pipeline(config):
     w_max = 0
     h_max = 0
     for i in range(3):
+        logging.warning(f'Processing slide # {i}!')
+
         fid, svsname = items[i]
         item = DSAItem(config, fid, svsname)
 
@@ -238,9 +241,9 @@ config = {
     'fixedSize': args.fixedSize,
 }
 
+logging.warning('Starting pipeline!')
+
 pipeline(config)
-
-
 
 if __name__=='__main__':
 
