@@ -195,22 +195,28 @@ def pipeline(config):
 
     w_max = 0
     h_max = 0
+    for i in range(len(items)):
+        try:
+            logging.warning(f'Processing slide # {i}!')
+
+            fid, svsname = items[i]
+            item = DSAItem(config, fid, svsname)
+
+            if config['fixedSize']:
+                w, h =  item.getMaxBB()
+                w_max = max(w, w_max)
+                h_max = max(h, h_max)
+        except:
+            logging.warning('Skip Accessing Loop 1 : {i}')
+
     for i in range(3):
-        logging.warning(f'Processing slide # {i}!')
+        try:
+            fid, svsname = items[i]
+            item = DSAItem(config, fid, svsname)
 
-        fid, svsname = items[i]
-        item = DSAItem(config, fid, svsname)
-
-        if config['fixedSize']:
-            w, h =  item.getMaxBB()
-            w_max = max(w, w_max)
-            h_max = max(h, h_max)
-
-    for i in range(3):
-        fid, svsname = items[i]
-        item = DSAItem(config, fid, svsname)
-
-        item.extractFixed(w_max, h_max)
+            item.extractFixed(w_max, h_max)
+        except:
+            logging.warning('Skip Accessing Loop 2 : {i}')
 
 parser = argparse.ArgumentParser(
                     prog='DSA FTU Annotations to Patches',
