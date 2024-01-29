@@ -12,4 +12,15 @@ girder_client
 tiffslide
 
 ## Usage
-conda run python main.py --fixedSize True --masked True --svsBase '</blue/pinaki.sarder/..>' --fid '659eb008bd96faac30b68fff' --layerName 'non_globally_sclerotic_glomeruli' --outputdir '</blue/pinaki.sarder/..>' --username 'username' --password 'password' --apiUrl 'https://athena.rc.ufl.edu/api/v1'
+
+'''
+conda run python main.py --fixedSize True 
+	--masked True 
+	--svsBase '/blue/...' 
+	--fid '659eb008bd96faac30b68fff' 
+	--layerName 'non_globally_sclerotic_glomeruli' 
+	--outputdir '/blue/...' 
+	--username 'username' 
+	--password 'password' 
+	--apiUrl 'https://athena.rc.ufl.edu/api/v1'
+'''
