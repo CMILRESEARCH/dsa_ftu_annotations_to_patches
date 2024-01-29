@@ -3,47 +3,12 @@ import cv2
 import girder_client
 import shapely
 import tiffslide as openslide
-import cv2
 import numpy as np
 import os
-import cv2
 
 import numpy as np
 
-# Pipeline
-def pipeline():
-
-    config = {
-        'svsBase' : "/blue/pinaki.sarder/...",
-        'fid' : "659eb008bd96faac30b68fff",
-        'layerName': 'non_globally_sclerotic_glomeruli',
-        'outputdir': '/orange/pinaki.sarder/ahmed.naglah/...',
-        'username': 'username',
-        'password': 'password',
-        'apiUrl': 'https://athena.rc.ufl.edu/api/v1',
-        'masked': True,
-        'fixedSize': True,
-    }
-
-    dsaFolder = DSAFolder(config)
-    items = dsaFolder.items
-
-    w_max = 0
-    h_max = 0
-    for i in range(3):
-        fid, svsname = items[i]
-        item = DSAItem(config, fid, svsname)
-
-        if config['fixedSize']:
-            w, h =  item.getMaxBB()
-            w_max = max(w, w_max)
-            h_max = max(h, h_max)
-
-    for i in range(3):
-        fid, svsname = items[i]
-        item = DSAItem(config, fid, svsname)
-
-        item.extractFixed(w_max, h_max)
+import argparse
 
 class DSA:
     def __init__(self, config) -> None:
@@ -221,6 +186,74 @@ class DSAItem(DSA):
         
         return patch, mask
 
+# Pipeline
+def pipeline(config):
+
+    dsaFolder = DSAFolder(config)
+    items = dsaFolder.items
+
+    w_max = 0
+    h_max = 0
+    for i in range(3):
+        fid, svsname = items[i]
+        item = DSAItem(config, fid, svsname)
+
+        if config['fixedSize']:
+            w, h =  item.getMaxBB()
+            w_max = max(w, w_max)
+            h_max = max(h, h_max)
+
+    for i in range(3):
+        fid, svsname = items[i]
+        item = DSAItem(config, fid, svsname)
+
+        item.extractFixed(w_max, h_max)
+
+parser = argparse.ArgumentParser(
+                    prog='DSA FTU Annotations to Patches',
+                    description='Extract DSA FTU Annotations to Patches',
+                    epilog='Text at the bottom of help')
+
+parser.add_argument('--svsBase', help='/blue/pinaki.sarder/...')     
+parser.add_argument('--fid', help='659eb008bd96faac30b68fff')     
+parser.add_argument('--layerName', help='non_globally_sclerotic_glomeruli')     
+parser.add_argument('--outputdir', help='/orange/pinaki.sarder/ahmed.naglah/...')     
+parser.add_argument('--username', help='username')     
+parser.add_argument('--password', help='password')     
+parser.add_argument('--apiUrl', help='https://athena.rc.ufl.edu/api/v1')     
+parser.add_argument('--masked', help='Apply ftu mask on patch')     
+parser.add_argument('--fixedSize', help='Extract fixed sized with max w and h')     
+
+args = parser.parse_args()
+
+config = {
+    'svsBase' : args.svsBase,
+    'fid' : args.fid,
+    'layerName': args.layerName,
+    'outputdir': args.outputdir,
+    'username': args.username,
+    'password': args.password,
+    'apiUrl': args.apiUrl,
+    'masked': args.masked,
+    'fixedSize': args.fixedSize,
+}
+
+pipeline(config)
+
+
+
 if __name__=='__main__':
 
-    pipeline()
+    config = {
+        'svsBase' : "/blue/pinaki.sarder/...",
+        'fid' : "659eb008bd96faac30b68fff",
+        'layerName': 'non_globally_sclerotic_glomeruli',
+        'outputdir': '/orange/pinaki.sarder/ahmed.naglah/...',
+        'username': 'username',
+        'password': 'password',
+        'apiUrl': 'https://athena.rc.ufl.edu/api/v1',
+        'masked': True,
+        'fixedSize': True,
+    }
+
+    pipeline(config)
