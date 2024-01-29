@@ -4,8 +4,11 @@ Utility script to extract FTU from DSA annotations files and store them as jpg i
 
 
 ## Dependencies:
+
 OpenCV
+
 girder_client
+
 tiffslide
 
 ## Usage
