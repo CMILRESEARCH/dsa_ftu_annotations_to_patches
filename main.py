@@ -202,19 +202,21 @@ def pipeline(config):
             fid, svsname = items[i]
             item = DSAItem(config, fid, svsname)
 
-            if config['fixedSize']:
-                w, h =  item.getMaxBB()
-                w_max = max(w, w_max)
-                h_max = max(h, h_max)
+            w, h =  item.getMaxBB()
+            w_max = max(w, w_max)
+            h_max = max(h, h_max)
         except:
             logging.warning('Skip Accessing Loop 1 : {i}')
 
-    for i in range(3):
+    for i in range(len(items)):
         try:
             fid, svsname = items[i]
             item = DSAItem(config, fid, svsname)
 
-            item.extractFixed(w_max, h_max)
+            if config['fixedSize']:
+                item.extractFixed(w_max, h_max)
+            else:
+                item.extract()
         except:
             logging.warning('Skip Accessing Loop 2 : {i}')
 
